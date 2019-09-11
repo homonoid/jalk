@@ -32,7 +32,7 @@ Multiplication "multiplication" =
 
 
 Division "division" =
-	a:Atomar _ "/" _ b:Division
+	  a:Atomar _ "/" _ b:Division
     { return { type: 'DivisionNode', values: [a, b] }; }
   
   / Atomar
