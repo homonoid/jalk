@@ -1,0 +1,19 @@
+{
+  "name": "jalk",
+  "version": "0.0.1",
+  "description": "Jalk is a free, open-source calculator, that was made as an exercise.",
+  "main": "src/jalk.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "jalk": "bin/jalk"
+  },
+  "keywords": [
+    "calculator",
+    "exercise",
+    "pegjs",
+    "peg",
+    "parser"
+  ],
+  "author": "Alexey Yurchenko",
+  "license": "MIT"
+}
