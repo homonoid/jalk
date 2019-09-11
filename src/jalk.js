@@ -23,7 +23,7 @@ function error(err, plen=__PROMPT.length) {
 }
 
 // Print the welcome message.
-console.log('\n   Welcome Jalk, an exercise calculator.\n   Type `.help` for help.\n');
+console.log('\n   Welcome to Jalk, an exercise calculator.\n   Type `.help` for help.\n');
 
 // Configure the prompt.
 ri.setPrompt(__PROMPT);
