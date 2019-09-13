@@ -12,9 +12,18 @@
   }
 }
 
-Start = 
-    _ e:Expression _ 
-    { return { type: 'RootNode', containing: e }; }
+Start =
+	nodes:Node*
+    { return { type: 'RootNode', containing: nodes }; }
+
+Node = 
+    _ e:(Variable / Expression) _ 
+    { return e }
+
+Variable "variable declaration" = 
+	
+    name:Symbol _ "=" _ val:Expression
+    { return { type: 'VariableDeclarationNode', name: name, value: val }; }
 
 Expression "addition or subtraction" = 
 
@@ -45,10 +54,16 @@ Atomar "atomar" =
   / prefix:("+"/"-") e:Expression
     { return { type: 'PrefixedNode', prefix: prefix, value: e }; }
 
+  / Symbol
   / Number
 
 Number "number" = 
     ([1-9] [0-9]* / "0") 
     { return { type: 'SimpleNumber', value: text() }; }
        
+Symbol "symbol" =
+	
+    [a-z] [A-Za-z0-9_]*
+    { return { type: 'Symbol', value: text() }; }
+
 _ = [ \n\t\r\v]*

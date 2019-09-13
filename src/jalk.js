@@ -4,7 +4,7 @@ const __PROMPT = "jalk> ";
 
 // Modules.
 const {parse, SyntaxError} = require('./jalk/parse.js');
-const walk = require('./jalk/walker.js');
+const Walker = require('./jalk/walker.js');
 
 // Readline.
 const readline = require('readline');
@@ -28,6 +28,9 @@ console.log('\n   Welcome to Jalk, an exercise calculator.\n   Type `.help` for 
 // Configure the prompt.
 ri.setPrompt(__PROMPT);
 ri.prompt();
+
+// Initialize the walker (read: global scope).
+const walker = new Walker();
 
 // Add the listeners.
 ri.on('line', (line) => {
@@ -54,12 +57,11 @@ ri.on('line', (line) => {
         default:
           console.log('Command not found. Sorry!');
       }
-        
     } else {
       // Do the computation.
       try {
         const ast = parse(line);
-        const res = walk(ast);
+        const res = walker.walk(ast);
         console.log(`= ${res}`);
       } catch (err) {
         if (err instanceof SyntaxError) {
