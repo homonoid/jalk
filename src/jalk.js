@@ -67,6 +67,7 @@ ri.on('line', (line) => {
         if (err instanceof SyntaxError) {
           console.log(error(err));
         }
+        console.log(err)
       }
     }
   }

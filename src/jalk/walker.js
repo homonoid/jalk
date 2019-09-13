@@ -6,7 +6,7 @@
 const Context = require('./context.js');
 
 class Walker {
-  constructor (context = {}) {
+  constructor (context={}) {
     this.ctx = new Context(context);
   }
 
@@ -15,6 +15,32 @@ class Walker {
       case 'RootNode':
         return this.walk(ast.containing);
       
+      case 'FunctionDeclarationNode': {
+        const name = ast.name.value;
+        const params = ast.params.map((val, idx) => val.value);
+        const body = ast.body;
+
+        this.ctx.defvar(name, (...args) => {
+          if (args.length == params.length) {
+            // inner context walker
+            let argsobj = {};
+
+            for (let idx in params) {
+              argsobj[params[idx]] = this.walk(args[idx]);
+            }
+
+            // Functions are isolated scope boxes; 
+            const inwalk = new Walker(argsobj);
+            return inwalk.walk(body);
+          } else {
+            // TODO: argument count mismatch
+            throw EvalError;
+          }
+        });
+
+        break;
+      }
+
       case 'VariableDeclarationNode': {
         let name = ast.name.value;
         let val = this.walk(ast.value);
@@ -49,6 +75,9 @@ class Walker {
           return val * -1;
         }
       }
+
+      case 'FunctionCallNode':
+        return this.ctx.callfn(ast.name.value, ast.args);
 
       case 'Symbol':
         return this.ctx.getvar(ast.value)
